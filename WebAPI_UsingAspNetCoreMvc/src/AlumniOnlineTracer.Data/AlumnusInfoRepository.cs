@@ -14,10 +14,10 @@ namespace AlumniOnlineTracer.Data
 		{
 			_alumni = new ConcurrentDictionary<Guid, AlumnusInfo>();
 
-			var newAlumnusInfo = new AlumnusInfo { FirstName = "Fname1", LastName = "Lname1" };
+			var newAlumnusInfo = new AlumnusInfo { FirstName = "Jboy", LastName = "Flaga" };
 			_alumni.AddOrUpdate(newAlumnusInfo.Id, newAlumnusInfo, (key, odValue) => newAlumnusInfo);
 
-			newAlumnusInfo = new AlumnusInfo { FirstName = "Fname2", LastName = "Lname2" };
+			newAlumnusInfo = new AlumnusInfo { FirstName = "Donald", LastName = "Magallena" };
 			_alumni.AddOrUpdate(newAlumnusInfo.Id, newAlumnusInfo, (key, odValue) => newAlumnusInfo);
 		}
 

@@ -1,0 +1,9 @@
+﻿@using AlumniOnlineTracer.Client.Model
+@model IEnumerable<AlumnusModel>
+
+<h1>Alumni Info</h1>
+
+@foreach (var alumnusInfo in Model)
+{	
+	<div>@alumnusInfo.Id: @alumnusInfo.LastName, @alumnusInfo.FirstName</div>
+}

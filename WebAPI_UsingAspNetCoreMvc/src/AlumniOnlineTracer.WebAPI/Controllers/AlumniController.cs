@@ -1,33 +1,35 @@
 ﻿using AlumniOnlineTracer.Core.Interfaces;
 using AlumniOnlineTracer.Core.Model;
+using AlumniOnlineTracer.WebAPI.Model;
+using AlumniOnlineTracer.WebAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 
-namespace AlumniOnlineTracer.Controllers
+namespace AlumniOnlineTracer.WebAPI.Controllers
 {
 	[Route("api/[controller]")]
 	public class AlumniController : Controller
 	{
-		private IAlumniRepository _repository;
-		public AlumniController(IAlumniRepository repository)
+		private AlumniService _service;
+		public AlumniController(AlumniService service)
 		{
-			_repository = repository;
+			_service = service;
 		}
 
 		// GET api/Alumni
 		[HttpGet]
-		public IEnumerable<AlumnusInfo> Get()
+		public IEnumerable<AlumnusModel> Get()
 		{
-			return _repository.GetAll();
+			return _service.GetAllAlumni();
 
 		}
 
 		// GET api/Alumni/d74221f9-0708-4005-a553-e7d69e915f16
 		[HttpGet("{id}")]
-		public IActionResult GetById(Guid id)
+		public IActionResult GetById(string id)
 		{
-			var item = _repository.GetAlumnusInfo(id);
+			var item = _service.GetAlumnusModel(id);
 			if (item == null)
 			{
 				return NotFound();
@@ -37,14 +39,14 @@ namespace AlumniOnlineTracer.Controllers
 
 		// POST api/Alumni
 		[HttpPost]
-		public IActionResult Create([FromBody] AlumnusInfo item)
+		public IActionResult Create([FromBody] CreateAlumnusModel item)
 		{
 			if (item == null)
 			{
 				return BadRequest();
 			}
-			_repository.Add(item);
-			return CreatedAtRoute("GetById", new { id = item.Id }, item);
+			string id = _service.AddThenReturnID(item);
+			return CreatedAtRoute("GetById", new { Id = id }, item);
 		}
 
 		//// PUT api/Alumni/d74221f9-0708-4005-a553-e7d69e915f16

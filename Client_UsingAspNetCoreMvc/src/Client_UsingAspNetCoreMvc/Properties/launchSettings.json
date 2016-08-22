@@ -3,7 +3,7 @@
 		"windowsAuthentication": false,
 		"anonymousAuthentication": true,
 		"iisExpress": {
-			"applicationUrl": "http://localhost:5491/",
+			"applicationUrl": "http://localhost:6371/",
 			"sslPort": 0
 		}
 	},
@@ -11,15 +11,14 @@
 		"IIS Express": {
 			"commandName": "IISExpress",
 			"launchBrowser": true,
-			"launchUrl": "api/alumni",
 			"environmentVariables": {
 				"ASPNETCORE_ENVIRONMENT": "Development"
 			}
 		},
-		"AlumniOnlineTracer.WebAPI": {
+		"AlumniOnlineTracer.Client": {
 			"commandName": "Project",
 			"launchBrowser": true,
-			"launchUrl": "http://localhost:5555/api/alumni",
+			"launchUrl": "http://localhost:5000",
 			"environmentVariables": {
 				"ASPNETCORE_ENVIRONMENT": "Development"
 			}
