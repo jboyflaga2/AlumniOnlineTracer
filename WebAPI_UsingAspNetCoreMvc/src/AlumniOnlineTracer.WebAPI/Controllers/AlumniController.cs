@@ -1,6 +1,6 @@
 ﻿using AlumniOnlineTracer.Core.Interfaces;
 using AlumniOnlineTracer.Core.Model;
-using AlumniOnlineTracer.WebAPI.Model;
+using AlumniOnlineTracer.WebAPI.Models;
 using AlumniOnlineTracer.WebAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;

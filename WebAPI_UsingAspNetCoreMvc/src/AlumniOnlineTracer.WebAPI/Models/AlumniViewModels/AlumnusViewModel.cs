@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AlumniOnlineTracer.WebAPI.Model
+namespace AlumniOnlineTracer.WebAPI.Models
 {
-    public class AlumnusModel
+    public class AlumnusViewModel
 	{
 		public string Id { get; set; }
 		public string FirstName { get; set; }

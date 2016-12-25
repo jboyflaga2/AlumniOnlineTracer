@@ -15,8 +15,15 @@
 		"Microsoft.Extensions.Logging.Debug": "1.0.0",
 		"Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
 		"AlumniOnlineTracer.Core": "1.0.0-*",
-					"AlumniOnlineTracer.Data": "1.0.0-*",
-					"Microsoft.Extensions.Configuration.CommandLine": "1.0.0"
+		"AlumniOnlineTracer.Data": "1.0.0-*",
+		"Microsoft.Extensions.Configuration.CommandLine": "1.0.0",
+
+		//"AspNet.Security.OAuth.Validation": "1.0.0-alpha2-final",
+		"OpenIddict": "1.0.0-*",
+		"Microsoft.AspNetCore.Authentication.JwtBearer": "1.0.0",
+		"Microsoft.EntityFrameworkCore.SqlServer": "1.0.0" /*,
+		"Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.0.0"
+		*/
 	},
 
 	"tools": {
@@ -47,9 +54,7 @@
 		"include": [
 			"wwwroot",
 			"Views",
-			"Areas/**/Views",
-			"appsettings.json",
-			"web.config"
+			"Areas/**/ Views", "appsettings.json", "web.config"
 		]
 	},
 
