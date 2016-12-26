@@ -19,7 +19,7 @@ namespace AlumniOnlineTracer.WebAPI.Controllers
 
 		// GET api/Alumni
 		[HttpGet]
-		public IEnumerable<AlumnusModel> Get()
+		public IEnumerable<AlumnusViewModel> Get()
 		{
 			return _service.GetAllAlumni();
 
@@ -39,7 +39,7 @@ namespace AlumniOnlineTracer.WebAPI.Controllers
 
 		// POST api/Alumni
 		[HttpPost]
-		public IActionResult Create([FromBody] CreateAlumnusModel item)
+		public IActionResult Create([FromBody] CreateAlumnusViewModel item)
 		{
 			if (item == null)
 			{

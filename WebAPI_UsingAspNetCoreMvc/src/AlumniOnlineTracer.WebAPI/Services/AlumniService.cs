@@ -1,6 +1,6 @@
 ﻿using AlumniOnlineTracer.Core.Interfaces;
 using AlumniOnlineTracer.Core.Model;
-using AlumniOnlineTracer.WebAPI.Model;
+using AlumniOnlineTracer.WebAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +16,10 @@ namespace AlumniOnlineTracer.WebAPI.Services
 			_repository = repository;
 		}
 
-		internal IEnumerable<AlumnusModel> GetAllAlumni()
+		internal IEnumerable<AlumnusViewModel> GetAllAlumni()
 		{
 			IEnumerable<AlumnusInfo> alumnusInfos = _repository.GetAll();
-			List<AlumnusModel> alumnusModels = new List<AlumnusModel>();
+			List<AlumnusViewModel> alumnusModels = new List<AlumnusViewModel>();
 
 			// TODO_JBOY:
 			// 1. convert each alumnus info to alumnus model
@@ -28,7 +28,7 @@ namespace AlumniOnlineTracer.WebAPI.Services
 
 			foreach (var info in alumnusInfos)
 			{
-				alumnusModels.Add(new AlumnusModel
+				alumnusModels.Add(new AlumnusViewModel
 				{
 					Id = info.Id.ToString(),
 					FirstName = info.FirstName,
@@ -39,14 +39,14 @@ namespace AlumniOnlineTracer.WebAPI.Services
 			return alumnusModels;
 		}
 
-		internal AlumnusModel GetAlumnusModel(string id)
+		internal AlumnusViewModel GetAlumnusModel(string id)
 		{
 			Guid idAsGuid;
 			if (Guid.TryParse(id, out idAsGuid))
 			{
 				var info = _repository.GetAlumnusInfo(idAsGuid);
 
-				return new AlumnusModel
+				return new AlumnusViewModel
 				{
 					Id = info.Id.ToString(),
 					FirstName = info.FirstName,
@@ -57,7 +57,7 @@ namespace AlumniOnlineTracer.WebAPI.Services
 			return null;
 		}
 
-		internal string AddThenReturnID(CreateAlumnusModel model)
+		internal string AddThenReturnID(CreateAlumnusViewModel model)
 		{
 			var info = new AlumnusInfo
 			{
