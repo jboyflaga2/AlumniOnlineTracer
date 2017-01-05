@@ -17,6 +17,8 @@ package example.com.sampleproject.core;
 
 import android.app.Application;
 
+import com.facebook.FacebookSdk;
+
 import mortar.MortarScope;
 
 public class MainApplication extends Application {
@@ -27,5 +29,13 @@ public class MainApplication extends Application {
         if (rootScope == null) rootScope = MortarScope.buildRootScope().build("Root");
 
         return rootScope.hasService(name) ? rootScope.getService(name) : super.getSystemService(name);
+    }
+
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
     }
 }

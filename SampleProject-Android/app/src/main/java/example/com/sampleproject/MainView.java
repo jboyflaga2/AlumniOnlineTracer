@@ -23,6 +23,7 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -77,7 +78,7 @@ public class MainView extends LinearLayout {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK ) {
-            Flow.get(MainView.this).goBack();
+            return Flow.get(MainView.this).goBack();
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -87,9 +88,22 @@ public class MainView extends LinearLayout {
         Flow.get(MainView.this).set(new PersonalInfoScreen());
     }
 
+    @OnClick(R.id.get_contact_button)
+    protected void onGetContactButtonClick() {
+        presenter.getContact();
+    }
 
     @OnClick(R.id.facebook_login_button)
     protected void onFacebookLoginButtonClick() {
-        presenter.goToFacebookLogin();
+        presenter.loginUsingFacebook();
+    }
+
+    @OnClick(R.id.facebook_logout_button)
+    protected void onFacebookLogoutButtonClick() {
+        presenter.logoutFromFacebook();
+    }
+
+    public void showToast(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
     }
 }

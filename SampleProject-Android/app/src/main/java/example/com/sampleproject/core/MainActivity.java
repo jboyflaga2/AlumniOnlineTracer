@@ -61,6 +61,9 @@ public class MainActivity extends AppCompatActivity
 
     private MortarScope activityScope;
 
+    @Inject
+    ActivityResultPresenter activityResultPresenter;
+
     @Override
     protected void attachBaseContext(Context baseContext) {
         baseContext = Flow.configure(baseContext, this)
@@ -73,7 +76,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public Object getSystemService(String name) {
         activityScope = findChild(getApplicationContext(), getScopeName());
-        MainComponent mainComponent = DaggerMainComponent.builder().mainModule(new MainModule(this)).build();
+        MainComponent mainComponent = DaggerMainComponent.builder().mainModule(new MainModule(this, this)).build();
 
         if (activityScope == null) {
             activityScope = buildChild(getApplicationContext())
@@ -94,7 +97,7 @@ public class MainActivity extends AppCompatActivity
         BundleServiceRunner.getBundleServiceRunner(this).onCreate(savedInstanceState);
         DaggerService.<MainComponent>getDaggerComponent(this).inject(this);
 
-        FacebookSdk.sdkInitialize(getApplicationContext());
+        //FacebookSdk.sdkInitialize(getApplicationContext());
     }
 
     @Override
@@ -124,9 +127,19 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            default:
+                activityResultPresenter.onActivityResultReceived(requestCode, resultCode, data);
+        }
+    }
+
     //endregion
 
-    //region "Implementation of interfacs
+    //region "Implementation of interfaces
     @Override
     public MortarScope getMortarScope() {
         return activityScope;

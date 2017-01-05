@@ -13,10 +13,29 @@
         android:text="Go To Personal Info View"/>
 
     <Button
+        android:id="@+id/get_contact_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Get a Contact"/>
+
+    <Button
         android:id="@+id/facebook_login_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Login using Facebook"/>
+
+    <Button
+        android:id="@+id/facebook_logout_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Logout from Facebook"/>
+
+    <!--<com.gc.materialdesign.views.ButtonFlat-->
+        <!--android:id="@+id/facebook_login_button"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!---->
+        <!--android:text="Login using Facebook" />-->
 
     <!--<com.facebook.login.widget.LoginButton-->
         <!--android:id="@+id/login_button"-->

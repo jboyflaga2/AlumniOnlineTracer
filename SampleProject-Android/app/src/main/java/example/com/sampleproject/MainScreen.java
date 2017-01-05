@@ -18,9 +18,13 @@ package example.com.sampleproject;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -32,6 +36,7 @@ import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -40,6 +45,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import example.com.sampleproject.core.ActivityResultPresenter;
+import example.com.sampleproject.core.ActivityResultRegistrar;
 import example.com.sampleproject.core.Layout;
 import example.com.sampleproject.core.MainComponent;
 import example.com.sampleproject.core.MainModule;
@@ -62,23 +68,103 @@ public class MainScreen {
 //    }
 
     @Singleton
-    static class Presenter extends ViewPresenter<MainView>{
+    static class Presenter extends ViewPresenter<MainView>  implements ActivityResultPresenter.ActivityResultListener, FacebookCallback<LoginResult> {
+
+        private CallbackManager callbackManager;
+        private List<String> permissionNeeds = Arrays.asList("public_profile", "email", "user_birthday");
+
+        private final WindowOwnerPresenter windowOwnerPresenter;
+        private final ActivityResultRegistrar activityResultRegistrar;
 
         @Inject
-        Presenter(){
+        Presenter(WindowOwnerPresenter windowOwnerPresenter, ActivityResultRegistrar activityResultRegistrar){
+            this.windowOwnerPresenter = windowOwnerPresenter;
+            this.activityResultRegistrar = activityResultRegistrar;
+        }
+
+        @Override
+        protected void onEnterScope(MortarScope scope) {
+            super.onEnterScope(scope);
+            activityResultRegistrar.register(scope, this);
         }
 
         @Override
         protected void onLoad(Bundle savedInstanceState) {
+
+            callbackManager = CallbackManager.Factory.create();
+            LoginManager.getInstance().registerCallback(callbackManager, this);
         }
 
         @Override
         protected void onSave(Bundle outState) {
         }
 
-        public void goToFacebookLogin() {
-            Intent intent = new Intent(getView().getContext(), FacebookLoginActivity.class);
-            getView().getContext().startActivity(intent);
+        public void getContact() {
+            Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+            windowOwnerPresenter.getActivity().startActivityForResult(intent, 1001);
         }
+
+        public void loginUsingFacebook() {
+//            Intent intent = new Intent(getView().getContext(), FacebookLoginActivity.class);
+//            getView().getContext().startActivity(intent);
+//
+
+            if(AccessToken.getCurrentAccessToken() == null) {
+                LoginManager.getInstance().logInWithReadPermissions(windowOwnerPresenter.getActivity(), permissionNeeds);
+            }
+        }
+
+        public void logoutFromFacebook() {
+            LoginManager.getInstance().logOut();
+        }
+
+        //region "ActivityResultPresenter.ActivityResultListener"
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+
+            switch (requestCode) {
+                case 1001:
+                    if (resultCode == Activity.RESULT_OK) {
+                        Uri contactData = data.getData();
+                        Cursor c =  getView().getContext().getContentResolver().query(contactData, null, null, null, null);
+                        if (c.moveToFirst()) {
+                            String name = c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                            // TODO Whatever you want to do with the selected contact name.
+                            getView().showToast("Contact Name: " + name);
+                        }
+                    }
+                    break;
+            }
+        }
+
+        @Override
+        public void onSuccess(LoginResult loginResult) {
+            Toast.makeText(windowOwnerPresenter.getActivity(), "Facebook login successful.", Toast.LENGTH_LONG).show();
+
+            SharedPreferences prefs = windowOwnerPresenter.getActivity().getSharedPreferences("PREFS", 0);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("USER_ID", loginResult.getAccessToken().getUserId());
+            editor.commit();
+        }
+
+        @Override
+        public void onCancel() {
+            Toast.makeText(windowOwnerPresenter.getActivity(), "Facebook login cancelled.", Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onError(FacebookException error) {
+            Toast.makeText(windowOwnerPresenter.getActivity(), "Facebook login error.", Toast.LENGTH_LONG).show();
+
+            SharedPreferences prefs = windowOwnerPresenter.getActivity().getSharedPreferences("PREFS", 0);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("USER_ID", "");
+            editor.commit();
+
+            Toast toast = Toast.makeText(windowOwnerPresenter.getActivity(), "Error logging in using Facebook", Toast.LENGTH_LONG);
+            toast.show();
+        }
+        //endregion
     }
 }

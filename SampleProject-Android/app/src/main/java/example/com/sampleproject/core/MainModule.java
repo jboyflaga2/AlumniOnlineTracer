@@ -23,10 +23,12 @@ public class MainModule {
 
     private final static String BASE_URL = "http://127.0.0.1:5000";
 
-    private WindowOwnerPresenter.View windowOwnerPresenterView;
+    private final WindowOwnerPresenter.View windowOwnerPresenterView;
+    private final  ActivityResultPresenter.View activityResultPresenterView;
 
-    public MainModule(WindowOwnerPresenter.View windowOwnerPresenterView) {
+    public MainModule(WindowOwnerPresenter.View windowOwnerPresenterView,  ActivityResultPresenter.View activityResultPresenterView) {
         this.windowOwnerPresenterView = windowOwnerPresenterView;
+        this.activityResultPresenterView = activityResultPresenterView;
     }
 
     @Provides
@@ -79,7 +81,16 @@ public class MainModule {
 
     @Provides
     @Singleton
-    static ActivityResultPresenter provideActivityResultPresenter() {
-        return new ActivityResultPresenter();
+    ActivityResultPresenter provideActivityResultPresenter() {
+        ActivityResultPresenter activityResultPresenter = new ActivityResultPresenter();
+        activityResultPresenter.takeView(activityResultPresenterView);
+        return activityResultPresenter;
     }
+
+    @Provides
+    @Singleton
+    static ActivityResultRegistrar provideIntentLauncher(ActivityResultPresenter presenter) {
+        return presenter;
+    }
+
 }
