@@ -28,17 +28,10 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 
-import java.lang.reflect.Array;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -47,16 +40,9 @@ import javax.inject.Singleton;
 import example.com.sampleproject.core.ActivityResultPresenter;
 import example.com.sampleproject.core.ActivityResultRegistrar;
 import example.com.sampleproject.core.Layout;
-import example.com.sampleproject.core.MainComponent;
-import example.com.sampleproject.core.MainModule;
 import example.com.sampleproject.core.WindowOwnerPresenter;
-import example.com.sampleproject.services.ValuesService;
-import flow.Flow;
 import mortar.MortarScope;
 import mortar.ViewPresenter;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 @Layout(R.layout.main_view)
 public class MainScreen {
@@ -90,7 +76,6 @@ public class MainScreen {
 
         @Override
         protected void onLoad(Bundle savedInstanceState) {
-
             callbackManager = CallbackManager.Factory.create();
             LoginManager.getInstance().registerCallback(callbackManager, this);
         }
@@ -105,17 +90,18 @@ public class MainScreen {
         }
 
         public void loginUsingFacebook() {
-//            Intent intent = new Intent(getView().getContext(), FacebookLoginActivity.class);
-//            getView().getContext().startActivity(intent);
-//
-
-            if(AccessToken.getCurrentAccessToken() == null) {
+            if(isNotLoggedInUsingFacebook()) {
                 LoginManager.getInstance().logInWithReadPermissions(windowOwnerPresenter.getActivity(), permissionNeeds);
             }
         }
 
         public void logoutFromFacebook() {
             LoginManager.getInstance().logOut();
+            getView().updateFacebookButtons();
+        }
+
+        public boolean isNotLoggedInUsingFacebook() {
+            return AccessToken.getCurrentAccessToken() == null;
         }
 
         //region "ActivityResultPresenter.ActivityResultListener"
@@ -137,7 +123,9 @@ public class MainScreen {
                     break;
             }
         }
+        //endregion
 
+        //region "FacebookCallback"
         @Override
         public void onSuccess(LoginResult loginResult) {
             Toast.makeText(windowOwnerPresenter.getActivity(), "Facebook login successful.", Toast.LENGTH_LONG).show();
@@ -146,6 +134,8 @@ public class MainScreen {
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString("USER_ID", loginResult.getAccessToken().getUserId());
             editor.commit();
+
+            getView().goToPersonalInfoView();
         }
 
         @Override

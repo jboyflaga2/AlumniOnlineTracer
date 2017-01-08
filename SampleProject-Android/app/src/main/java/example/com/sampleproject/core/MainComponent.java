@@ -1,9 +1,5 @@
 package example.com.sampleproject.core;
 
-import android.view.Window;
-
-import com.facebook.CallbackManager;
-
 import javax.inject.Singleton;
 
 import example.com.sampleproject.EmploymentView;

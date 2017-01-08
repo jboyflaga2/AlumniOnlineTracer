@@ -18,9 +18,6 @@ import com.facebook.login.widget.LoginButton;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import example.com.sampleproject.core.MainActivity;
-import flow.Flow;
-import flow.KeyDispatcher;
 
 /**
  * Created by User-01 on 12/26/2016.

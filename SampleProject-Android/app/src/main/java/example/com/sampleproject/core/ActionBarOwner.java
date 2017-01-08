@@ -18,11 +18,6 @@ package example.com.sampleproject.core;
 import android.content.Context;
 import android.os.Bundle;
 
-import dagger.Module;
-import dagger.Provides;
-
-import javax.inject.Singleton;
-
 import mortar.Presenter;
 import mortar.bundler.BundleService;
 import rx.functions.Action0;

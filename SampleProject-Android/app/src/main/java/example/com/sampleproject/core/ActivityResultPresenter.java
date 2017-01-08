@@ -13,7 +13,6 @@ import mortar.MortarScope;
 import mortar.Presenter;
 import mortar.Scoped;
 import mortar.bundler.BundleService;
-import mortar.bundler.BundleServiceRunner;
 
 @Singleton
 public class ActivityResultPresenter extends Presenter<ActivityResultPresenter.View>

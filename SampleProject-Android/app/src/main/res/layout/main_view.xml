@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="20dp">
 
     <Button
         android:id="@+id/personal_info_button"
@@ -16,7 +17,8 @@
         android:id="@+id/get_contact_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Get a Contact"/>
+        android:text="Get a Contact"
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/facebook_login_button"

@@ -8,7 +8,6 @@ import com.facebook.AccessToken;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import example.com.sampleproject.core.ActionBarOwner;
 import example.com.sampleproject.core.Layout;
 import example.com.sampleproject.models.PersonalInfo;
 import example.com.sampleproject.services.PersonalInfoService;
@@ -16,7 +15,6 @@ import mortar.ViewPresenter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import rx.functions.Action0;
 
 /**
  * Created by User-01 on 12/24/2016.
@@ -54,7 +52,8 @@ public class PersonalInfoScreen {
                 @Override
                 public void onResponse(Call<PersonalInfo> call, Response<PersonalInfo> response) {
                     if (response.body() != null) {
-                        getView().fillInputs(response.body());
+                        CurrentPersonalInfo = response.body();
+                        getView().fillInputs(CurrentPersonalInfo);
                     }
                 }
 
@@ -75,14 +74,12 @@ public class PersonalInfoScreen {
             return accessToken != null;
         }
 
-        public void updatePersonalInfo(PersonalInfo personalInfo) {
-
-
-            Call<PersonalInfo> call = personalInfoService.postPersonalInfo(personalInfo);
+        public void updatePersonalInfo() {
+            Call<PersonalInfo> call = personalInfoService.postPersonalInfo(CurrentPersonalInfo);
             call.enqueue(new Callback<PersonalInfo>() {
                 @Override
                 public void onResponse(Call<PersonalInfo> call, Response<PersonalInfo> response) {
-                    getView().fillInputs(response.body());
+
                 }
 
                 @Override
@@ -91,5 +88,7 @@ public class PersonalInfoScreen {
                 }
             });
         }
+
+        public PersonalInfo CurrentPersonalInfo;
     }
 }

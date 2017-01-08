@@ -13,5 +13,7 @@ namespace SampleProject.Repositories
 		void AddOrUpdate(PersonalInfo personalInfo);
 
         void Delete(string id);
+
+		void Save();
 	}
 }

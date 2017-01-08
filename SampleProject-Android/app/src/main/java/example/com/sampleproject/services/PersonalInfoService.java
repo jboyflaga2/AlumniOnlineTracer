@@ -1,7 +1,5 @@
 package example.com.sampleproject.services;
 
-import java.util.List;
-
 import example.com.sampleproject.models.PersonalInfo;
 import retrofit2.Call;
 import retrofit2.http.Body;

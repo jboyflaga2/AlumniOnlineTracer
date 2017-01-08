@@ -1,50 +1,93 @@
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using SampleProject.Model;
+
+using Newtonsoft.Json;
 
 namespace SampleProject.Repositories
 {
-	public class PersonalInfoRepository : IPersonalInfoRepository
-	{
-		private static ConcurrentDictionary<string, PersonalInfo> _personalInfos;
+    public class PersonalInfoRepository : IPersonalInfoRepository
+    {
+        private static ConcurrentDictionary<string, PersonalInfo> _personalInfos;
+        private static string personalInfosFileName = "PersonalInfos.txt";
 
-		static PersonalInfoRepository()
-		{
-			_personalInfos = new ConcurrentDictionary<string, PersonalInfo>();
+        static PersonalInfoRepository()
+        {
+            _personalInfos = new ConcurrentDictionary<string, PersonalInfo>();
+			
+            if (!File.Exists(personalInfosFileName))
+            {
+                File.Create(personalInfosFileName);
+            }
 
-			var newPersonalInfo = new PersonalInfo("jboyflaga") { FirstName = "Jboy", LastName = "Flaga" };
-			_personalInfos.AddOrUpdate(newPersonalInfo.Id, newPersonalInfo, (key, oldValue) => newPersonalInfo);
+            string personalInfosJsonString = string.Empty;
+            using (FileStream fileStream = File.OpenRead(personalInfosFileName))
+            {
+                using (StreamReader reader = new StreamReader(fileStream))
+                {
+                    personalInfosJsonString = reader.ReadToEnd();
+                }
+            }
 
-			newPersonalInfo = new PersonalInfo("donald") { FirstName = "Donald", LastName = "Magallena" };
-			_personalInfos.AddOrUpdate(newPersonalInfo.Id, newPersonalInfo, (key, oldValue) => newPersonalInfo);
-            
-			newPersonalInfo = new PersonalInfo("johnmichael") { FirstName = "John Michael", LastName = "Sabnal" };
-			_personalInfos.AddOrUpdate(newPersonalInfo.Id, newPersonalInfo, (key, oldValue) => newPersonalInfo);
-		}
+            ICollection<PersonalInfo> listOfPersonalInfos;
+            if (string.IsNullOrEmpty(personalInfosJsonString))
+            {
+                 listOfPersonalInfos = new List<PersonalInfo>();
+			// 	string friendsFileName = "Friends";
+			// 	using (FileStream fileStream = File.OpenRead(friendsFileName))
+			// 	{
+			// 		using (StreamReader reader = new StreamReader(fileStream))
+			// 		{
+			// 			personalInfosJsonString = reader.ReadToEnd();
+			// 		}
+			// 	}				
+            }
+			else {
+				listOfPersonalInfos = JsonConvert.DeserializeObject<List<PersonalInfo>>(personalInfosJsonString);
+			}
+			
+            foreach (PersonalInfo info in listOfPersonalInfos)
+            {
+                _personalInfos.AddOrUpdate(info.UserId, info, (key, oldValue) => info);
+            }
+        }
 
-		public PersonalInfoRepository()
-		{
-		}
+        public PersonalInfoRepository()
+        {
+        }
 
-		public IEnumerable<PersonalInfo> GetAll()
-		{
-			return _personalInfos.Values;
-		}
+        public IEnumerable<PersonalInfo> GetAll()
+        {
+            return _personalInfos.Values;
+        }
 
-		public PersonalInfo Get(string id)
-		{
-			return _personalInfos.ContainsKey(id) ? _personalInfos[id] : null;
-		}
+        public PersonalInfo Get(string id)
+        {
+            return _personalInfos.ContainsKey(id) ? _personalInfos[id] : null;
+        }
 
-		public void AddOrUpdate(PersonalInfo personalInfo)
-		{			
-			_personalInfos.AddOrUpdate(personalInfo.Id, personalInfo, (key, valoldValueue) => personalInfo);
-		}
+        public void AddOrUpdate(PersonalInfo personalInfo)
+        {
+            _personalInfos.AddOrUpdate(personalInfo.UserId, personalInfo, (key, valoldValueue) => personalInfo);
+        }
 
-        public void Delete(string id) {
+        public void Delete(string id)
+        {
             PersonalInfo deletedPersonalInfo;
             _personalInfos.TryRemove(id, out deletedPersonalInfo);
         }
-	}
+
+        public void Save()
+        {
+            string serializedPersonalInfos = JsonConvert.SerializeObject(_personalInfos.Values);
+			using (FileStream fileStream = File.OpenWrite(personalInfosFileName))
+			{
+				using (StreamWriter writer = new StreamWriter(fileStream))
+				{
+					writer.Write(serializedPersonalInfos);
+				}
+			}
+        }
+    }
 }

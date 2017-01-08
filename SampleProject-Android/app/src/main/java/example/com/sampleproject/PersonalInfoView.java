@@ -3,12 +3,10 @@ package example.com.sampleproject;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.AttributeSet;
-import android.view.KeyEvent;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.facebook.AccessToken;
-import com.facebook.login.LoginManager;
 
 import javax.inject.Inject;
 
@@ -64,19 +62,19 @@ public class PersonalInfoView extends LinearLayout {
 
     @OnClick(R.id.next_button)
     protected void onNextButtonClick() {
-        PersonalInfo personalInfoToUpdate = new PersonalInfo();
+        PersonalInfo personalInfoToUpdate = presenter.CurrentPersonalInfo;
         String userId = "";
         //if (isLoggedIn()) {
             SharedPreferences prefs = getContext().getSharedPreferences("PREFS", 0);
             userId = prefs.getString("USER_ID", "");
         //}
 
-        personalInfoToUpdate.setId(userId);
+        personalInfoToUpdate.setUserId(userId);
         personalInfoToUpdate.setFirstName(firstNameEditText.getText().toString());
         personalInfoToUpdate.setLastName(lastNameEditText.getText().toString());
         personalInfoToUpdate.setEmail(emailEditText.getText().toString());
 
-        presenter.updatePersonalInfo(personalInfoToUpdate);
+        presenter.updatePersonalInfo();
 
         Flow.get(PersonalInfoView.this).set(new EmploymentScreen());
     }

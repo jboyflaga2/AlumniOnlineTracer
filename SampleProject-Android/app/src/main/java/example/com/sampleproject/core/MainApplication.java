@@ -16,9 +16,7 @@
 package example.com.sampleproject.core;
 
 import android.app.Application;
-
 import com.facebook.FacebookSdk;
-
 import mortar.MortarScope;
 
 public class MainApplication extends Application {

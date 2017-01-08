@@ -15,32 +15,23 @@
  */
 package example.com.sampleproject.core;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.facebook.CallbackManager;
-import com.facebook.FacebookSdk;
-import com.facebook.login.widget.LoginButton;
 
 import java.util.Map;
 
 import javax.inject.Inject;
 
-import example.com.sampleproject.FacebookLoginActivity;
 import example.com.sampleproject.MainScreen;
 import flow.Direction;
 import flow.Flow;
@@ -50,7 +41,6 @@ import flow.State;
 import flow.TraversalCallback;
 import mortar.MortarScope;
 import mortar.bundler.BundleServiceRunner;
-import rx.functions.Action0;
 
 import static mortar.MortarScope.buildChild;
 import static mortar.MortarScope.findChild;

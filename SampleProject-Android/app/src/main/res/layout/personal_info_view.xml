@@ -2,6 +2,7 @@
 <ScrollView
     android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:padding="20dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <example.com.sampleproject.PersonalInfoView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -12,7 +13,11 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Personal Info View" />
+            android:textSize="20sp"
+            android:textAllCaps="true"
+            android:gravity="center_horizontal"
+            android:layout_margin="20dp"
+            android:text="Personal Info" />
 
         <TextView
             android:layout_width="match_parent"

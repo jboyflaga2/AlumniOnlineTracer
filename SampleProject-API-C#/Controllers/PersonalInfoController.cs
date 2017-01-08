@@ -25,28 +25,30 @@ namespace SampleProject.Controllers
             return _repository.GetAll();
         }
         
-        [HttpGet("{id}")]
-        public PersonalInfo Get(string id)
+        [HttpGet("{userId}")]
+        public PersonalInfo Get(string userId)
         {
-            return _repository.Get(id);
+            return _repository.Get(userId);
         }
 
         [HttpPost]
         public void Post([FromBody]PersonalInfo personalInfo)
         {
             _repository.AddOrUpdate(personalInfo);
+            _repository.Save();
         }
 
-        [HttpPut("{id}")]
-        public void Put(string id, [FromBody]PersonalInfo value)
+        [HttpPut("{userId}")]
+        public void Put(string userId, [FromBody]PersonalInfo value)
         {
             
         }
 
-        [HttpDelete("{id}")]
-        public void Delete(string id)
+        [HttpDelete("{userId}")]
+        public void Delete(string userId)
         {
-            _repository.Delete(id);
+            _repository.Delete(userId);
+            _repository.Save();
         }
     }
 }

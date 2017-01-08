@@ -16,24 +16,14 @@
 package example.com.sampleproject;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -51,6 +41,12 @@ public class MainView extends LinearLayout {
     @Inject
     CallbackManager callbackManager;
 
+    @BindView(R.id.facebook_login_button)
+    Button facebookLoginButton;
+
+    @BindView(R.id.facebook_logout_button)
+    Button facebookLogoutButton;
+
     public MainView(Context context, AttributeSet attrs) {
         super(context, attrs);
         //DaggerService.<MainScreen.Component>getDaggerComponent(context).inject(this);
@@ -61,6 +57,8 @@ public class MainView extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         ButterKnife.bind(this);
+
+        updateFacebookButtons();
     }
 
     @Override
@@ -85,7 +83,7 @@ public class MainView extends LinearLayout {
 
     @OnClick(R.id.personal_info_button)
     protected void onPersonalInfoButtonClick() {
-        Flow.get(MainView.this).set(new PersonalInfoScreen());
+        goToPersonalInfoView();
     }
 
     @OnClick(R.id.get_contact_button)
@@ -103,7 +101,21 @@ public class MainView extends LinearLayout {
         presenter.logoutFromFacebook();
     }
 
+    public void goToPersonalInfoView() {
+        Flow.get(MainView.this).set(new PersonalInfoScreen());
+    }
+
     public void showToast(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    public void updateFacebookButtons() {
+        if (presenter.isNotLoggedInUsingFacebook()) {
+            facebookLoginButton.setVisibility(View.VISIBLE);
+            facebookLogoutButton.setVisibility(View.GONE);
+        } else {
+            facebookLoginButton.setVisibility(View.GONE);
+            facebookLogoutButton.setVisibility(View.VISIBLE);
+        }
     }
 }

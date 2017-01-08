@@ -5,17 +5,17 @@ package example.com.sampleproject.models;
  */
 
 public class PersonalInfo {
-    private String id;
+    private String userId;
     private String firstName;
     private String lastName;
     private String email;
 
-    public String getId() {
-        return id;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUserId(String id) {
+        this.userId = id;
     }
 
     public String getFirstName() {
@@ -41,4 +41,18 @@ public class PersonalInfo {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    // TODO: 1/8/2017 transfer this part later
+    //region "This part will be transfered later"
+    private boolean isEmployed;
+
+    public boolean isEmployed() {
+        return isEmployed;
+    }
+
+    public void setEmployed(boolean employed) {
+        isEmployed = employed;
+    }
+    //endregion
+
 }

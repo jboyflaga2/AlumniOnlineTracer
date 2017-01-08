@@ -1,0 +1,72 @@
+[
+  {
+    "id": "jboy",
+    "firstName": "Jboy",
+    "lastName": "Flaga",
+    "email": null,
+    "isEmployed": false
+  },
+  {
+    "id": "ives",
+    "firstName": "Ives Bonn",
+    "lastName": "Maquilan",
+    "email": null,
+    "isEmployed": false
+  },
+  {
+    "id": "dawn",
+    "firstName": "Dawn",
+    "lastName": "Alcazar",
+    "email": null,
+    "isEmployed": false
+  },
+  {
+    "id": "clyde",
+    "firstName": "Clyde",
+    "lastName": "Goboy",
+    "email": null,
+    "isEmployed": false
+  },
+  {
+    "id": "jubz",
+    "firstName": "Loreto",
+    "lastName": "Yubat",
+    "email": null,
+    "isEmployed": false
+  },
+  {
+    "id": "donald",
+    "firstName": "Donald",
+    "lastName": "Magallena",
+    "email": null,
+    "isEmployed": false
+  },
+  {
+    "id": "johnmichael",
+    "firstName": "John Michael",
+    "lastName": "Sabnal",
+    "email": null,
+    "isEmployed": false
+  },
+  {
+    "id": "inyaki",
+    "firstName": "Inyaki",
+    "lastName": "Narciso",
+    "email": null,
+    "isEmployed": false
+  },
+  {
+    "id": "joash",
+    "firstName": "Joash",
+    "lastName": "Tubaga",
+    "email": null,
+    "isEmployed": false
+  },
+  {
+    "id": "orly",
+    "firstName": "Orlando",
+    "lastName": "Yanson",
+    "email": null,
+    "isEmployed": false
+  }
+]

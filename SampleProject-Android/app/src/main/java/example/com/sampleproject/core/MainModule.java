@@ -2,8 +2,6 @@ package example.com.sampleproject.core;
 
 import com.facebook.CallbackManager;
 
-import java.util.List;
-
 import javax.inject.Singleton;
 
 import dagger.Module;

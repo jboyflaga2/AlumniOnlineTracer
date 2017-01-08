@@ -3,17 +3,42 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="20dp">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Employment View"/>
+        android:textSize="20sp"
+        android:textAllCaps="true"
+        android:gravity="center_horizontal"
+        android:layout_margin="20dp"
+        android:text="Employment Info" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Are you currently employed?"/>
+
+
+    <RadioGroup
+        android:id="@+id/employed_radiogroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <RadioButton
+            android:id="@+id/employed_yes_radiobutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yes"/>
+
+        <RadioButton
+            android:id="@+id/employed_no_radiobutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No" />
+    </RadioGroup>
+
 
     <EditText
         android:id="@+id/employment_status_edittext"
@@ -21,9 +46,25 @@
         android:layout_height="wrap_content" />
 
     <Button
+        android:id="@+id/submit_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit"/>
+
+    <Button
         android:id="@+id/back_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Go Back"/>
+
+    <!--<com.github.mikephil.charting.charts.LineChart-->
+        <!--android:id="@+id/linechart"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" />-->
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/piechart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </example.com.sampleproject.EmploymentView>
