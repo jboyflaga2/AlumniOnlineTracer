@@ -41,6 +41,10 @@ public class MainView extends LinearLayout {
     @Inject
     CallbackManager callbackManager;
 
+
+    @BindView(R.id.personal_info_button)
+    Button personalInfoButton;
+
     @BindView(R.id.facebook_login_button)
     Button facebookLoginButton;
 
@@ -113,9 +117,11 @@ public class MainView extends LinearLayout {
         if (presenter.isNotLoggedInUsingFacebook()) {
             facebookLoginButton.setVisibility(View.VISIBLE);
             facebookLogoutButton.setVisibility(View.GONE);
+            personalInfoButton.setVisibility(View.GONE);
         } else {
             facebookLoginButton.setVisibility(View.GONE);
             facebookLogoutButton.setVisibility(View.VISIBLE);
+            personalInfoButton.setVisibility(View.VISIBLE);
         }
     }
 }

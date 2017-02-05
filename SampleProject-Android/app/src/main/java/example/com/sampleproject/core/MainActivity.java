@@ -22,17 +22,25 @@ import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.facebook.FacebookSdk;
 
 import java.util.Map;
 
 import javax.inject.Inject;
 
 import example.com.sampleproject.MainScreen;
+import example.com.sampleproject.ChartScreen;
+import example.com.sampleproject.PersonalInfoScreen;
 import flow.Direction;
 import flow.Flow;
 import flow.KeyChanger;
@@ -41,32 +49,41 @@ import flow.State;
 import flow.TraversalCallback;
 import mortar.MortarScope;
 import mortar.bundler.BundleServiceRunner;
+import rx.functions.Action0;
 
 import static mortar.MortarScope.buildChild;
 import static mortar.MortarScope.findChild;
 
 public class MainActivity extends AppCompatActivity
         implements WindowOwnerPresenter.View,
-        ActivityResultPresenter.View {
+        ActivityResultPresenter.View,
+        ActionBarOwner.Activity {
 
     private MortarScope activityScope;
+    private ActionBarOwner.MenuAction actionBarMenuAction;
 
     @Inject
     ActivityResultPresenter activityResultPresenter;
+
+    @Inject
+    ActionBarOwner actionBarOwner;
 
     @Override
     protected void attachBaseContext(Context baseContext) {
         baseContext = Flow.configure(baseContext, this)
                 .dispatcher(KeyDispatcher.configure(this, new Changer()).build())
                 .defaultKey(new MainScreen())
+                //.defaultKey(new PersonalInfoScreen())
                 .install();
+
         super.attachBaseContext(baseContext);
     }
 
     @Override
     public Object getSystemService(String name) {
         activityScope = findChild(getApplicationContext(), getScopeName());
-        MainComponent mainComponent = DaggerMainComponent.builder().mainModule(new MainModule(this, this)).build();
+        MainModule mainModule = new MainModule(this, this, this);
+        MainComponent mainComponent = DaggerMainComponent.builder().mainModule(mainModule).build();
 
         if (activityScope == null) {
             activityScope = buildChild(getApplicationContext())
@@ -79,6 +96,29 @@ public class MainActivity extends AppCompatActivity
                 : super.getSystemService(name);
     }
 
+    /** Configure the action bar menu as required by {@link ActionBarOwner.Activity}. */
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
+//        if (actionBarMenuAction != null) {
+//            menu.add(actionBarMenuAction.title)
+//                    .setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS)
+//                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+//                        @Override public boolean onMenuItemClick(MenuItem menuItem) {
+//                            actionBarMenuAction.action.call();
+//                            return true;
+//                        }
+//                    });
+//        }
+//        menu.add("Say Hi")
+//                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+//                    @Override public boolean onMenuItemClick(MenuItem item) {
+//                        //Log.d("DemoActivity", MortarScopeDevHelper.scopeHierarchyToString(activityScope));
+//                        Toast.makeText(getContext(), "Hi", Toast.LENGTH_LONG).show();
+//                        return true;
+//                    }
+//                });
+        return true;
+    }
+
     //region "Activity Life Cycle Overrides"
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +127,9 @@ public class MainActivity extends AppCompatActivity
         BundleServiceRunner.getBundleServiceRunner(this).onCreate(savedInstanceState);
         DaggerService.<MainComponent>getDaggerComponent(this).inject(this);
 
-        //FacebookSdk.sdkInitialize(getApplicationContext());
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
+//        setHomeButtonEnabled
     }
 
     @Override
@@ -126,7 +168,6 @@ public class MainActivity extends AppCompatActivity
                 activityResultPresenter.onActivityResultReceived(requestCode, resultCode, data);
         }
     }
-
     //endregion
 
     //region "Implementation of interfaces
@@ -151,10 +192,40 @@ public class MainActivity extends AppCompatActivity
     }
     //endregion
 
+    //region "Implementation of ActionBarOwner.Activity"
+
+    @Override
+    public void setShowHomeEnabled(boolean enabled) {
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowHomeEnabled(enabled);
+    }
+
+    @Override
+    public void setUpButtonEnabled(boolean enabled) {
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(enabled);
+        actionBar.setHomeButtonEnabled(enabled);
+    }
+
+    @Override
+    public void setMenu(ActionBarOwner.MenuAction action) {
+        if (action != actionBarMenuAction) {
+            actionBarMenuAction = action;
+            supportInvalidateOptionsMenu();
+        }
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
+    }
+    //endregion
+
     //region "Helpers"
     private String getScopeName() {
         return getClass().getName();
     }
+
     //endregion
 
     private final class Changer implements KeyChanger {

@@ -24,6 +24,7 @@ namespace SampleProject.Repositories
             string personalInfosJsonString = string.Empty;
             using (FileStream fileStream = File.OpenRead(personalInfosFileName))
             {
+                fileStream.Position = 0;
                 using (StreamReader reader = new StreamReader(fileStream))
                 {
                     personalInfosJsonString = reader.ReadToEnd();
@@ -33,20 +34,18 @@ namespace SampleProject.Repositories
             ICollection<PersonalInfo> listOfPersonalInfos;
             if (string.IsNullOrEmpty(personalInfosJsonString))
             {
-                 listOfPersonalInfos = new List<PersonalInfo>();
-			// 	string friendsFileName = "Friends";
-			// 	using (FileStream fileStream = File.OpenRead(friendsFileName))
-			// 	{
-			// 		using (StreamReader reader = new StreamReader(fileStream))
-			// 		{
-			// 			personalInfosJsonString = reader.ReadToEnd();
-			// 		}
-			// 	}				
-            }
-			else {
-				listOfPersonalInfos = JsonConvert.DeserializeObject<List<PersonalInfo>>(personalInfosJsonString);
+				string sampledataFileName = "sampledata";
+				using (FileStream fileStream = File.OpenRead(sampledataFileName))
+				{
+					using (StreamReader reader = new StreamReader(fileStream))
+					{
+						personalInfosJsonString = reader.ReadToEnd();
+					}
+				}
 			}
 			
+			listOfPersonalInfos = JsonConvert.DeserializeObject<List<PersonalInfo>>(personalInfosJsonString);
+
             foreach (PersonalInfo info in listOfPersonalInfos)
             {
                 _personalInfos.AddOrUpdate(info.UserId, info, (key, oldValue) => info);
@@ -81,8 +80,9 @@ namespace SampleProject.Repositories
         public void Save()
         {
             string serializedPersonalInfos = JsonConvert.SerializeObject(_personalInfos.Values);
-			using (FileStream fileStream = File.OpenWrite(personalInfosFileName))
+            using (FileStream fileStream = new FileStream(personalInfosFileName, FileMode.Truncate, FileAccess.Write))
 			{
+                //fileStream.Position = 0;
 				using (StreamWriter writer = new StreamWriter(fileStream))
 				{
 					writer.Write(serializedPersonalInfos);

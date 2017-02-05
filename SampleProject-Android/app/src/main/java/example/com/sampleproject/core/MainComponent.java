@@ -2,6 +2,7 @@ package example.com.sampleproject.core;
 
 import javax.inject.Singleton;
 
+import example.com.sampleproject.ChartView;
 import example.com.sampleproject.EmploymentView;
 import example.com.sampleproject.MainView;
 import example.com.sampleproject.PersonalInfoView;
@@ -16,6 +17,7 @@ public interface MainComponent {
     void inject(MainView t);
     void inject(PersonalInfoView view);
     void inject(EmploymentView view);
+    void inject(ChartView view);
     void inject(WindowOwnerPresenter view);
     void inject(MainActivity mainActivity);
     //void inject(CallbackManager callbackManager);

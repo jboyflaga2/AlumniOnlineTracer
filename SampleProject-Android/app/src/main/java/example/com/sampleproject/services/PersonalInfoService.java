@@ -1,5 +1,7 @@
 package example.com.sampleproject.services;
 
+import java.util.List;
+
 import example.com.sampleproject.models.PersonalInfo;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -12,6 +14,9 @@ import retrofit2.http.Path;
  */
 
 public interface PersonalInfoService {
+
+    @GET("/api/personalinfo")
+    Call<List<PersonalInfo>> getAllPersonalInfo();
 
     @GET("/api/personalinfo/{id}")
     Call<PersonalInfo> getPersonalInfo(@Path("id") String id);

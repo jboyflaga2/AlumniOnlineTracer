@@ -54,9 +54,6 @@ public class EmploymentView extends LinearLayout {
 //    @BindView(R.id.linechart)
 //    LineChart lineChart;
 
-    @BindView(R.id.piechart)
-    PieChart pieChart;
-
     public EmploymentView(Context context, AttributeSet attrs) {
         super(context, attrs);
         //DaggerService.<DaggerPersonalInfoScreen.Component>getDaggerComponent(context).inject(this);
@@ -67,46 +64,6 @@ public class EmploymentView extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         ButterKnife.bind(this);
-
-//        List<Entry> entries = new ArrayList<Entry>();
-//        entries.add(new Entry(10, 10));
-//        entries.add(new Entry(5, 5));
-//        entries.add(new Entry(10, 5));
-//        entries.add(new Entry(5, 10));
-//        entries.add(new Entry(7, 9));
-//        entries.add(new Entry(30, 15));
-//
-//        LineDataSet dataSet = new LineDataSet(entries, "Label"); // add entries to dataset
-//        dataSet.setColor(Color.RED);
-//        dataSet.setValueTextColor(Color.BLUE); // styling, ...
-//
-//        LineData lineData = new LineData(dataSet);
-//        lineChart.setData(lineData);
-//        lineChart.invalidate(); // refresh
-
-
-        List<PieEntry> pieEntries = new ArrayList<>();
-        PieEntry pieEntry1 = new PieEntry(10, "Not Employed");
-        pieEntries.add(pieEntry1);
-        pieEntries.add(new PieEntry(90, "Employed"));
-
-        ArrayList<Integer> colors = new ArrayList<Integer>();
-        colors.add(Color.RED);
-        colors.add(Color.BLUE);
-        colors.add(Color.GREEN);
-
-        PieDataSet pieDataSet = new PieDataSet(pieEntries, "Pie Entries"); // add entries to dataset
-        pieDataSet.setValueTextColor(Color.BLACK); // styling, ...
-
-        pieDataSet.setColors(colors);
-        pieDataSet.setSliceSpace(3f);
-        pieDataSet.setSelectionShift(5f);
-
-        PieData pieData = new PieData(pieDataSet);
-        pieChart.setData(pieData);
-        pieChart.setUsePercentValues(true);
-
-        pieChart.invalidate();
     }
 
     @Override
@@ -123,7 +80,6 @@ public class EmploymentView extends LinearLayout {
 
     @OnClick(R.id.submit_button)
     protected void onSubmitButtonClick() {
-
         int selectedEmployedRadioButtonId = employedRadioGroup.getCheckedRadioButtonId();
 
         String userId = "";
@@ -135,7 +91,6 @@ public class EmploymentView extends LinearLayout {
         employmentInfo.setEmployed(selectedEmployedRadioButtonId == R.id.employed_yes_radiobutton);
 
         presenter.updateEmploymentInfo(employmentInfo);
-
     }
 
     @OnClick(R.id.back_button)
@@ -143,6 +98,10 @@ public class EmploymentView extends LinearLayout {
         Flow.get(EmploymentView.this).goBack();
     }
 
+    @OnClick(R.id.view_chart_button)
+    protected void onViewChartButtonClick() {
+        goToViewChart();
+    }
 
     public void fillInputs(PersonalInfo employementInfo) {
         if (employementInfo.isEmployed()) {
@@ -150,6 +109,10 @@ public class EmploymentView extends LinearLayout {
         } else {
             employedNoRadioButton.setChecked(true);
         }
+    }
+
+    public void goToViewChart() {
+        Flow.get(EmploymentView.this).set(new ChartScreen());
     }
 
 }

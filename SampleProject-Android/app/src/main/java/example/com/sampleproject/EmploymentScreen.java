@@ -73,12 +73,12 @@ public class EmploymentScreen {
             call.enqueue(new Callback<PersonalInfo>() {
                 @Override
                 public void onResponse(Call<PersonalInfo> call, Response<PersonalInfo> response) {
-
+                    getView().goToViewChart();
                 }
 
                 @Override
                 public void onFailure(Call<PersonalInfo> call, Throwable t) {
-
+                    getView().goToViewChart();
                 }
             });
         }

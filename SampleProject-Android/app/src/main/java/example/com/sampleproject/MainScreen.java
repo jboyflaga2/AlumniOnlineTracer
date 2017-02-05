@@ -98,6 +98,8 @@ public class MainScreen {
         public void logoutFromFacebook() {
             LoginManager.getInstance().logOut();
             getView().updateFacebookButtons();
+
+            //todo: reset user id in shared prefs
         }
 
         public boolean isNotLoggedInUsingFacebook() {

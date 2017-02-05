@@ -23,10 +23,14 @@ public class MainModule {
 
     private final WindowOwnerPresenter.View windowOwnerPresenterView;
     private final  ActivityResultPresenter.View activityResultPresenterView;
+    private final ActionBarOwner.Activity actionBarOwnerActivity;
 
-    public MainModule(WindowOwnerPresenter.View windowOwnerPresenterView,  ActivityResultPresenter.View activityResultPresenterView) {
+    public MainModule(WindowOwnerPresenter.View windowOwnerPresenterView,
+                      ActivityResultPresenter.View activityResultPresenterView,
+                      ActionBarOwner.Activity actionBarOwnerActivity) {
         this.windowOwnerPresenterView = windowOwnerPresenterView;
         this.activityResultPresenterView = activityResultPresenterView;
+        this.actionBarOwnerActivity = actionBarOwnerActivity;
     }
 
     @Provides
@@ -50,7 +54,7 @@ public class MainModule {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                //.addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(ScalarsConverterFactory.create())
                 .build();
 
         PersonalInfoService service = retrofit.create(PersonalInfoService.class);
@@ -91,4 +95,11 @@ public class MainModule {
         return presenter;
     }
 
+    @Provides
+    @Singleton
+    ActionBarOwner provideActionBarOwner() {
+        ActionBarOwner actionBarOwner = new ActionBarOwner();
+        actionBarOwner.takeView(actionBarOwnerActivity);
+        return actionBarOwner;
+    }
 }

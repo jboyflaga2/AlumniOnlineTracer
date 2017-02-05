@@ -6,8 +6,6 @@ import android.util.AttributeSet;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import com.facebook.AccessToken;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -62,21 +60,17 @@ public class PersonalInfoView extends LinearLayout {
 
     @OnClick(R.id.next_button)
     protected void onNextButtonClick() {
-        PersonalInfo personalInfoToUpdate = presenter.CurrentPersonalInfo;
-        String userId = "";
-        //if (isLoggedIn()) {
-            SharedPreferences prefs = getContext().getSharedPreferences("PREFS", 0);
-            userId = prefs.getString("USER_ID", "");
-        //}
+        PersonalInfo personalInfoToUpdate = new PersonalInfo();
+        SharedPreferences prefs = getContext().getSharedPreferences("PREFS", 0);
+
+        String userId = prefs.getString("USER_ID", "");
 
         personalInfoToUpdate.setUserId(userId);
         personalInfoToUpdate.setFirstName(firstNameEditText.getText().toString());
         personalInfoToUpdate.setLastName(lastNameEditText.getText().toString());
         personalInfoToUpdate.setEmail(emailEditText.getText().toString());
 
-        presenter.updatePersonalInfo();
-
-        Flow.get(PersonalInfoView.this).set(new EmploymentScreen());
+        presenter.updatePersonalInfo(personalInfoToUpdate);
     }
 
     @OnClick(R.id.back_button)
@@ -90,8 +84,7 @@ public class PersonalInfoView extends LinearLayout {
         emailEditText.setText(personalInfo.getEmail());
     }
 
-    public boolean isLoggedIn() {
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        return accessToken != null;
+    public void goToEmploymentScreen() {
+        Flow.get(PersonalInfoView.this).set(new EmploymentScreen());
     }
 }
