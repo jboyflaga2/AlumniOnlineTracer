@@ -2,6 +2,24 @@
 Alumni Online Tracer using .NET Core, Angular2, and amCharts
 
 
+## NOTES on how to run this project (August 18, 2020)
+
+1. You need to [download and install Visual Studio Community 2015](https://visualstudio.microsoft.com/vs/older-downloads/) (refer to https://stackoverflow.com/a/43680545/1451757)
+
+
+2. To solve error `The imported project "C:\Program Files (x86)\MSBuild\Microsoft\VisualStudio\v14.0\DotNet\Microsoft.DotNet.Props" was not found.`, [install Visual Studio 2015 Tools (Preview 2)](https://stackoverflow.com/a/40955825/1451757) (Direct Download: https://go.microsoft.com/fwlink/?LinkId=827546)
+
+3. To solve he [Missing SDK error](https://github.com/aspnet/Tooling/blob/master/known-issues-vs2015.md#missing-sdk) 
+
+[Where to download previous version of .net core sdk?](https://stackoverflow.com/a/40718455/1451757)
+
+	1. download zip file for [.NET Core SDK](https://dotnet.microsoft.com/download/dotnet-core/1.0) 1.0.0-preview2.1-003177 (https://dotnet.microsoft.com/download/dotnet-core/thank-you/sdk-1.0.0-preview2-windows-x64-binaries)
+
+	2. copy `1.0.0-preview2-1-003177` directory inside `dotnet-dev-win-x64.1.0.0-preview2-1-003177\sdk`
+
+	3. paste in `C:\Program Files\dotnet\sdk`
+
+4. Error regarding OpenIddict is not yet resolved
 
 
 ## Some Useful Links
